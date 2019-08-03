@@ -38,3 +38,25 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task runUnitTests(dependsOn: [':app:testDebugUnitTest']) {
+    description 'Run all unit tests'
+}
+
+task runAcceptanceTests(dependsOn: [':app:connectedAndroidTest']) {
+    description 'Run all acceptance tests.'
+}
+
+task deployDebug(type: Exec, dependsOn: 'app:installDebug') {
+    def rootDir = project.rootDir
+    def localProperties = new File(rootDir, "local.properties")
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        localProperties.withInputStream {
+            inputStream -> properties.load(inputStream)
+        }
+        def sdkDir = properties.getProperty('sdk.dir')
+        def adb = "$sdkDir/platform-tools/adb"
+        commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.gonztirado.app/com.gonztirado.app.core.navigation.RouteActivity'
+    }
+}
