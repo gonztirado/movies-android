@@ -1,4 +1,4 @@
-package com.gonztirado.sample.movies
+package com.gonztirado.app
 
 import org.junit.Test
 
