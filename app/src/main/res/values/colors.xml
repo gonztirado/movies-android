@@ -6,6 +6,8 @@
     <color name="colorSecondary">#7f1a18</color>
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextSecondary">#7f1a18</color>
+    <color name="colorTextBackground">#666666</color>
+    <color name="colorTextBackgroundTranslucent">#66666666</color>
 
     <color name="translucentBackground">#ED000000</color>
 </resources>

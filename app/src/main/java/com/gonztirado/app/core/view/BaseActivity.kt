@@ -1,10 +1,9 @@
-package com.gonztirado.app.core.platform
+package com.gonztirado.app.core.view
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.gonztirado.app.R.id
 import com.gonztirado.app.R.layout
-import com.gonztirado.app.core.view.inTransaction
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**

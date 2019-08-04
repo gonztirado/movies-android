@@ -1,4 +1,4 @@
-package com.gonztirado.app.core.platform
+package com.gonztirado.app.core.view
 
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
