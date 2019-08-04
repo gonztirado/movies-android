@@ -19,7 +19,7 @@ class ApplicationModule(private val application: AndroidApplication) {
 
     @Provides @Singleton fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("http://www.omdbapi.com/")
+                .baseUrl("https://www.omdbapi.com/")
                 .client(createClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
