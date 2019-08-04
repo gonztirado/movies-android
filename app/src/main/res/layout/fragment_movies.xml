@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent">
+
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+
+        <EditText android:id="@+id/movieSearch"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:inputType="text"
+                  android:maxLines="1"
+                  android:layout_margin="6dp"
+                  android:padding="5dp"
+                  android:hint="@string/movies_search_hint"
+                  android:textColor="@color/colorTextPrimary"
+                  android:textColorHint="@color/colorTextSecondary"
+                  android:background="@color/colorTextBackground"/>
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/movieList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:background="@color/colorAccent"/>
+
+        <RelativeLayout
+                android:id="@+id/emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_centerInParent="true"
+                      android:text="EMPTY LIST"
+                      android:textColor="@color/colorTextPrimary"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

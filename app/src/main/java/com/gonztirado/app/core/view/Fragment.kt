@@ -8,8 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.view.View
-import com.gonztirado.app.core.platform.BaseActivity
-import com.gonztirado.app.core.platform.BaseFragment
+
 import kotlinx.android.synthetic.main.activity_layout.*
 
 /**

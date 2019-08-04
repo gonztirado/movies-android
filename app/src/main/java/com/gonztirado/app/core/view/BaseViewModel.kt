@@ -1,4 +1,4 @@
-package com.gonztirado.app.core.platform
+package com.gonztirado.app.core.view
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
