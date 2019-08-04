@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import com.gonztirado.app.core.view.BaseViewModel
 import com.gonztirado.app.features.movies.api.usecases.GetMovies
 import com.gonztirado.app.features.movies.model.Movie
-import com.gonztirado.app.features.movies.view.MovieView
 import javax.inject.Inject
 
 class MoviesViewModel

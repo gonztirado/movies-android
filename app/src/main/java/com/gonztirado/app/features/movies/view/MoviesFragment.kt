@@ -11,6 +11,7 @@ import com.gonztirado.app.core.navigation.Navigator
 import com.gonztirado.app.core.view.BaseFragment
 import com.gonztirado.app.core.view.viewModel
 import com.gonztirado.app.features.movies.view.MovieFailure.ListNotAvailable
+import com.gonztirado.app.features.movies.viewmodel.MovieView
 import com.gonztirado.app.features.movies.viewmodel.MoviesViewModel
 import com.gonztirado.app.util.exception.Failure
 import com.gonztirado.app.util.exception.Failure.NetworkConnection
@@ -50,7 +51,8 @@ class MoviesFragment : BaseFragment(), TextWatcher {
     private fun initializeView() {
         movieList.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         movieList.adapter = moviesAdapter
-        // TODO add poster click listener
+        moviesAdapter.clickListener = { movie, navigationExtras ->
+                    navigator.showMovieDetails(activity!!, movie, navigationExtras) }
         movieSearch.addTextChangedListener(this)
     }
 

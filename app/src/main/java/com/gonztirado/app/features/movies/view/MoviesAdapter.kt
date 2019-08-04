@@ -4,9 +4,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.gonztirado.app.R
+import com.gonztirado.app.core.navigation.Navigator
+import com.gonztirado.app.features.movies.viewmodel.MovieView
 import com.gonztirado.app.util.extension.inflate
 import com.gonztirado.app.util.extension.loadFromUrl
-import com.gonztirado.app.core.navigation.Navigator
 import kotlinx.android.synthetic.main.row_movie.view.*
 import javax.inject.Inject
 import kotlin.properties.Delegates

@@ -1,4 +1,4 @@
-package com.gonztirado.app.features.movies.view
+package com.gonztirado.app.features.movies.viewmodel
 
 import android.os.Parcel
 import com.gonztirado.app.util.platform.KParcelable

@@ -34,6 +34,11 @@
                 android:label="@string/movies_screen_title">
         </activity>
 
+        <activity
+                android:name=".features.movies.view.MovieDetailsActivity"
+                android:label="@string/movie_details_screen_title"
+                android:theme="@style/AppTheme.Translucent">
+        </activity>
 
     </application>
 
