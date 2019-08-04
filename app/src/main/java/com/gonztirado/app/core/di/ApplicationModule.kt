@@ -3,6 +3,7 @@ package com.gonztirado.app.core.di
 import android.content.Context
 import com.gonztirado.app.AndroidApplication
 import com.gonztirado.app.BuildConfig
+import com.gonztirado.app.features.movies.api.MoviesRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -18,7 +19,7 @@ class ApplicationModule(private val application: AndroidApplication) {
 
     @Provides @Singleton fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("https://example.provider.com/") // TODO add content provider base url
+                .baseUrl("http://www.omdbapi.com/")
                 .client(createClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -32,4 +33,6 @@ class ApplicationModule(private val application: AndroidApplication) {
         }
         return okHttpClientBuilder.build()
     }
+
+    @Provides @Singleton fun provideMoviesRepository(dataSource: MoviesRepository.Network): MoviesRepository = dataSource
 }
