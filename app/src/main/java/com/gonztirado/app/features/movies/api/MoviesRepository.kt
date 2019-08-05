@@ -1,9 +1,9 @@
 package com.gonztirado.app.features.movies.api
 
-import com.gonztirado.app.features.movies.model.Movie
-import com.gonztirado.app.features.movies.model.MovieDetails
 import com.gonztirado.app.features.movies.api.entities.MovieDetailsEntity
 import com.gonztirado.app.features.movies.api.entities.MovieSearchEntity
+import com.gonztirado.app.features.movies.model.Movie
+import com.gonztirado.app.features.movies.model.MovieDetails
 import com.gonztirado.app.util.exception.Failure
 import com.gonztirado.app.util.exception.Failure.NetworkConnection
 import com.gonztirado.app.util.exception.Failure.ServerError
@@ -27,7 +27,9 @@ interface MoviesRepository {
         override fun movies(searchTitle: String): Either<Failure, List<Movie>> {
             return when (networkHandler.isConnected) {
                 true -> request(
-                    service.movies(searchTitle), { searchEntity -> searchEntity.Search.map { it.toMovie() } },
+                    service.movies(searchTitle), {
+                        searchEntity -> searchEntity.toMovieList()
+                    },
                     MovieSearchEntity.empty()
                 )
                 false, null -> Left(NetworkConnection)
