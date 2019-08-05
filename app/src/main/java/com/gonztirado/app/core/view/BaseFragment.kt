@@ -32,6 +32,8 @@ abstract class BaseFragment : Fragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private var snackBar: Snackbar? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(layoutId(), container, false)
 
@@ -50,10 +52,15 @@ abstract class BaseFragment : Fragment() {
             Snackbar.make(viewContainer, message, Snackbar.LENGTH_SHORT).show()
 
     internal fun notifyWithAction(@StringRes message: Int, @StringRes actionText: Int, action: () -> Any) {
-        val snackBar = Snackbar.make(viewContainer, message, Snackbar.LENGTH_INDEFINITE)
-        snackBar.setAction(actionText) { _ -> action.invoke() }
-        snackBar.setActionTextColor(ContextCompat.getColor(appContext,
+        snackBar = Snackbar.make(viewContainer, message, Snackbar.LENGTH_INDEFINITE)
+        snackBar?.setAction(actionText) { _ -> action.invoke() }
+        snackBar?.setActionTextColor(ContextCompat.getColor(appContext,
                 color.colorTextPrimary))
-        snackBar.show()
+        snackBar?.show()
+    }
+
+    internal fun hideLastNotification() {
+        snackBar?.dismiss()
+        snackBar = null
     }
 }

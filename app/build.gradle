@@ -80,6 +80,8 @@ dependencies {
     implementation applicationDependencies.dagger
     implementation applicationDependencies.retrofit
     implementation applicationDependencies.okhttpLoggingInterceptor
+    implementation applicationDependencies.rxbinding
+    implementation applicationDependencies.rxbindingAppcompatV7
 
     //Unit/Integration tests dependencies
     testImplementation unitTestDependencies.kotlin
