@@ -1,11 +1,14 @@
 package com.gonztirado.app.util.extension
 
 import android.graphics.drawable.Drawable
+import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -20,25 +23,35 @@ fun View.cancelTransition() {
 
 fun View.isVisible() = this.visibility == View.VISIBLE
 
-fun View.visible() { this.visibility = View.VISIBLE }
-
-fun View.invisible() { this.visibility = View.GONE }
-
-fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View =
-        LayoutInflater.from(context).inflate(layoutRes, this, false)
-
-fun ImageView.loadFromUrl(url: String) =
-        Glide.with(this.context.applicationContext)
-                .load(url)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(this)!!
-
-fun ImageView.loadUrlAndPostponeEnterTransition(url: String, activity: FragmentActivity) {
-    val target: Target<Drawable> = ImageViewBaseTarget(this, activity)
-    Glide.with(context.applicationContext).load(url).into(target)
+fun View.visible() {
+    this.visibility = View.VISIBLE
 }
 
-private class ImageViewBaseTarget (var imageView: ImageView?, var activity: FragmentActivity?) : BaseTarget<Drawable>() {
+fun View.invisible() {
+    this.visibility = View.GONE
+}
+
+fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View =
+    LayoutInflater.from(context).inflate(layoutRes, this, false)
+
+fun ImageView.loadFromUrl(url: String, @DrawableRes default: Int) =
+    Glide.with(this.context.applicationContext)
+        .load(if (URLUtil.isValidUrl(url)) url else default)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(this)!!
+        .onLoadFailed(ContextCompat.getDrawable(this.context.applicationContext, default))
+
+
+
+fun ImageView.loadUrlAndPostponeEnterTransition(url: String, activity: FragmentActivity, @DrawableRes default: Int) {
+    val target: Target<Drawable> = ImageViewBaseTarget(this, activity)
+    Glide.with(context.applicationContext)
+        .load(if (URLUtil.isValidUrl(url)) url else default)
+        .into(target)
+        .onLoadFailed(ContextCompat.getDrawable(this.context.applicationContext, default))
+}
+
+private class ImageViewBaseTarget(var imageView: ImageView?, var activity: FragmentActivity?) : BaseTarget<Drawable>() {
     override fun removeCallback(cb: SizeReadyCallback?) {
         imageView = null
         activity = null
