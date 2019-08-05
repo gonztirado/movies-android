@@ -9,11 +9,10 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import com.gonztirado.app.AndroidApplication
 import com.gonztirado.app.R.color
 import com.gonztirado.app.core.di.ApplicationComponent
-import com.gonztirado.app.core.view.appContext
-import com.gonztirado.app.core.view.viewContainer
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
@@ -30,12 +29,13 @@ abstract class BaseFragment : Fragment() {
         (activity?.application as AndroidApplication).appComponent
     }
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var snackBar: Snackbar? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(layoutId(), container, false)
+        inflater.inflate(layoutId(), container, false)
 
     open fun onBackPressed() {}
 
@@ -46,21 +46,30 @@ abstract class BaseFragment : Fragment() {
     internal fun hideProgress() = progressStatus(View.GONE)
 
     private fun progressStatus(viewStatus: Int) =
-            with(activity) { if (this is BaseActivity) this.progress.visibility = viewStatus }
+        with(activity) { if (this is BaseActivity) this.progress.visibility = viewStatus }
 
     internal fun notify(@StringRes message: Int) =
-            Snackbar.make(viewContainer, message, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(viewContainer, message, Snackbar.LENGTH_SHORT).show()
 
     internal fun notifyWithAction(@StringRes message: Int, @StringRes actionText: Int, action: () -> Any) {
         snackBar = Snackbar.make(viewContainer, message, Snackbar.LENGTH_INDEFINITE)
         snackBar?.setAction(actionText) { _ -> action.invoke() }
-        snackBar?.setActionTextColor(ContextCompat.getColor(appContext,
-                color.colorTextPrimary))
+        snackBar?.setActionTextColor(
+            ContextCompat.getColor(
+                appContext,
+                color.colorTextPrimary
+            )
+        )
         snackBar?.show()
     }
 
     internal fun hideLastNotification() {
         snackBar?.dismiss()
         snackBar = null
+    }
+
+    internal fun hideKeyboard(editText: EditText) {
+        if (activity is BaseActivity)
+            (activity as BaseActivity).hideKeyboard(editText)
     }
 }

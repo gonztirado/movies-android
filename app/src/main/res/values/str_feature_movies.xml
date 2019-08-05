@@ -3,6 +3,8 @@
     <!-- Movie list -->
     <string name="movies_screen_title">Movies</string>
     <string name="movies_search_hint">Search for a movie...</string>
+    <string name="movies_search_empty_min_characters">Please enter at least three characters in the search box</string>
+    <string name="movies_search_empty_not_movie_found">Any movie was found</string>
 
     <!-- Movie details -->
     <string name="movie_details_screen_title">Movie Details</string>
@@ -12,4 +14,5 @@
 
     <!-- Animations -->
     <string name="movie_transition_poster">moviePosterTransition</string>
+
 </resources>

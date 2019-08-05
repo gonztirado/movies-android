@@ -1,6 +1,7 @@
 package com.gonztirado.app.features.movies.view
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.StringRes
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
@@ -51,6 +52,7 @@ class MoviesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeView()
         loadMoviesList()
+        Handler().postDelayed({ hideKeyboard(movieSearch) }, 200)
     }
 
 
@@ -64,26 +66,31 @@ class MoviesFragment : BaseFragment() {
         RxTextView.textChanges(movieSearch)
             .debounce(500, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(Action1 { loadMoviesList() })
+            .subscribe(Action1 {
+                loadMoviesList()
+            })
     }
 
     private fun loadMoviesList() {
         if (movieSearch.text.length < 3) {
-            movieList.invisible()
-            emptyView.visible()
+            showEmptyView(R.string.movies_search_empty_min_characters)
             return
         }
 
-        emptyView.invisible()
-        movieList.visible()
+        hideEmptyView()
         showProgress()
         moviesViewModel.loadMovies(movieSearch.text.toString())
     }
+
 
     private fun renderMoviesList(movies: List<MovieView>?) {
         moviesAdapter.collection = movies.orEmpty()
         hideProgress()
         hideLastNotification()
+
+        if (movies == null || movies.isEmpty()) {
+            showEmptyView(R.string.movies_search_empty_not_movie_found)
+        }
     }
 
     private fun handleFailure(failure: Failure?) {
@@ -95,9 +102,19 @@ class MoviesFragment : BaseFragment() {
     }
 
     private fun renderFailure(@StringRes message: Int) {
-        movieList.invisible()
-        emptyView.visible()
+        showEmptyView(R.string.movies_search_empty_not_movie_found)
         hideProgress()
         notifyWithAction(message, R.string.action_refresh, ::loadMoviesList)
+    }
+
+    private fun hideEmptyView() {
+        emptyView.invisible()
+        movieList.visible()
+    }
+
+    private fun showEmptyView(@StringRes resId: Int) {
+        movieList.invisible()
+        emptyView.visible()
+        emptyViewText.text = getString(resId)
     }
 }
