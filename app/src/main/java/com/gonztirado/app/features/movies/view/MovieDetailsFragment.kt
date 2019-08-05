@@ -60,7 +60,7 @@ class MovieDetailsFragment : BaseFragment() {
             movieDetailsViewModel.loadMovieDetails((arguments?.get(PARAM_MOVIE) as MovieView).id)
         } else {
             movieDetailsAnimator.cancelTransition(moviePoster)
-            moviePoster.loadFromUrl((arguments!![PARAM_MOVIE] as MovieView).poster)
+            moviePoster.loadFromUrl((arguments!![PARAM_MOVIE] as MovieView).poster, R.drawable.movie_empty)
         }
     }
 
@@ -73,7 +73,7 @@ class MovieDetailsFragment : BaseFragment() {
         movie?.let {
             with(movie) {
                 activity?.let {
-                    moviePoster.loadUrlAndPostponeEnterTransition(poster, it)
+                    moviePoster.loadUrlAndPostponeEnterTransition(poster, it, R.drawable.movie_empty)
                     it.toolbar.title = title
                 }
 
