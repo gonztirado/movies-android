@@ -69,6 +69,11 @@ class MoviesFragment : BaseFragment() {
             .subscribe(Action1 {
                 loadMoviesList()
             })
+
+        clearSearchButton.setOnClickListener {
+            movieSearch.text.clear()
+            loadMoviesList()
+        }
     }
 
     private fun loadMoviesList() {
@@ -79,6 +84,7 @@ class MoviesFragment : BaseFragment() {
 
         hideEmptyView()
         showProgress()
+        moviesAdapter.collection = emptyList()
         moviesViewModel.loadMovies(movieSearch.text.toString())
     }
 
