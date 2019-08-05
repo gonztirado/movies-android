@@ -1,10 +1,9 @@
 package com.gonztirado.app.features.movies.view
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.StringRes
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import com.gonztirado.app.R
 import com.gonztirado.app.core.navigation.Navigator
@@ -20,12 +19,20 @@ import com.gonztirado.app.util.extension.failure
 import com.gonztirado.app.util.extension.invisible
 import com.gonztirado.app.util.extension.observe
 import com.gonztirado.app.util.extension.visible
+import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.fragment_movies.*
+import rx.android.schedulers.AndroidSchedulers
+import rx.functions.Action1
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class MoviesFragment : BaseFragment(), TextWatcher {
-    @Inject lateinit var navigator: Navigator
-    @Inject lateinit var moviesAdapter: MoviesAdapter
+
+class MoviesFragment : BaseFragment() {
+
+    @Inject
+    lateinit var navigator: Navigator
+    @Inject
+    lateinit var moviesAdapter: MoviesAdapter
 
     private lateinit var moviesViewModel: MoviesViewModel
 
@@ -45,6 +52,7 @@ class MoviesFragment : BaseFragment(), TextWatcher {
         super.onViewCreated(view, savedInstanceState)
         initializeView()
         loadMoviesList()
+        Handler().postDelayed({ hideKeyboard(movieSearch) }, 200)
     }
 
 
@@ -52,32 +60,43 @@ class MoviesFragment : BaseFragment(), TextWatcher {
         movieList.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         movieList.adapter = moviesAdapter
         moviesAdapter.clickListener = { movie, navigationExtras ->
-                    navigator.showMovieDetails(activity!!, movie, navigationExtras) }
-        movieSearch.addTextChangedListener(this)
+            navigator.showMovieDetails(activity!!, movie, navigationExtras)
+        }
+
+        RxTextView.textChanges(movieSearch)
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(Action1 {
+                loadMoviesList()
+            })
+
+        clearSearchButton.setOnClickListener {
+            movieSearch.text.clear()
+            loadMoviesList()
+        }
     }
 
-    override fun afterTextChanged(s: Editable?) {loadMoviesList()}
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
     private fun loadMoviesList() {
-        if (movieSearch.text.length < 3 ) {
-            movieList.invisible()
-            emptyView.visible()
+        if (movieSearch.text.length < 3) {
+            showEmptyView(R.string.movies_search_empty_min_characters)
             return
         }
 
-        emptyView.invisible()
-        movieList.visible()
+        hideEmptyView()
         showProgress()
+        moviesAdapter.collection = emptyList()
         moviesViewModel.loadMovies(movieSearch.text.toString())
     }
+
 
     private fun renderMoviesList(movies: List<MovieView>?) {
         moviesAdapter.collection = movies.orEmpty()
         hideProgress()
+        hideLastNotification()
+
+        if (movies == null || movies.isEmpty()) {
+            showEmptyView(R.string.movies_search_empty_not_movie_found)
+        }
     }
 
     private fun handleFailure(failure: Failure?) {
@@ -89,9 +108,19 @@ class MoviesFragment : BaseFragment(), TextWatcher {
     }
 
     private fun renderFailure(@StringRes message: Int) {
-        movieList.invisible()
-        emptyView.visible()
+        showEmptyView(R.string.movies_search_empty_not_movie_found)
         hideProgress()
         notifyWithAction(message, R.string.action_refresh, ::loadMoviesList)
+    }
+
+    private fun hideEmptyView() {
+        emptyView.invisible()
+        movieList.visible()
+    }
+
+    private fun showEmptyView(@StringRes resId: Int) {
+        movieList.invisible()
+        emptyView.visible()
+        emptyViewText.text = getString(resId)
     }
 }

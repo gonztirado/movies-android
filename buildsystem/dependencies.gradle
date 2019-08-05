@@ -19,6 +19,7 @@ ext {
   javaxInject_version = '1'
   retrofit_version = '2.3.0'
   okhttp_logging_interceptor_version = '3.8.1'
+  rxbinding_version = '1.0.1'
 
   //Unit Testing
   robolectric_version = '3.8'
@@ -52,6 +53,8 @@ ext {
           javaxInject:                "javax.inject:javax.inject:$javaxInject_version",
           retrofit:                   "com.squareup.retrofit2:converter-gson:$retrofit_version",
           okhttpLoggingInterceptor:   "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor_version",
+          rxbinding:                  "com.jakewharton.rxbinding:rxbinding:$rxbinding_version",
+          rxbindingAppcompatV7:       "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$rxbinding_version",
   ]
 
   unitTesting = [

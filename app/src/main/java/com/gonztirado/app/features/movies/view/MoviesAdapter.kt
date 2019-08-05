@@ -32,7 +32,7 @@ class MoviesAdapter
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movieView: MovieView, clickListener: (MovieView, Navigator.Extras) -> Unit) {
             itemView.movieCardTitle.text = movieView.title
-            itemView.moviePoster.loadFromUrl(movieView.poster)
+            itemView.moviePoster.loadFromUrl(movieView.poster, R.drawable.movie_empty)
             itemView.setOnClickListener { clickListener(movieView, Navigator.Extras(itemView.moviePoster)) }
         }
     }
