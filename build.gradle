@@ -10,8 +10,8 @@ buildscript {
     ext.min_sdk = 21
 
     ext.application_id = 'com.gonztirado.app'
-    ext.version_name = '0.2'
-    ext.version_code = 1
+    ext.version_name = '0.3'
+    ext.version_code = 3
     ext.test_runner = 'android.support.test.runner.AndroidJUnitRunner'
 
     repositories {
