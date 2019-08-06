@@ -1,6 +1,7 @@
 package com.gonztirado.app.features.movies.view
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.gonztirado.app.R
 import com.gonztirado.app.core.view.BaseFragment
@@ -39,6 +40,9 @@ class MovieDetailsFragment : BaseFragment() {
     @Inject
     lateinit var movieDetailsAnimator: MovieDetailsAnimator
 
+    @Inject
+    lateinit var movieRatingsAdapter: MovieRatingsAdapter
+
     private lateinit var movieDetailsViewModel: MovieDetailsViewModel
 
     override fun layoutId() = R.layout.fragment_movie_details
@@ -58,6 +62,8 @@ class MovieDetailsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         if (firstTimeCreated(savedInstanceState)) {
             movieDetailsViewModel.loadMovieDetails((arguments?.get(PARAM_MOVIE) as MovieView).id)
+            movieRatingList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            movieRatingList.adapter = movieRatingsAdapter
         } else {
             movieDetailsAnimator.cancelTransition(moviePoster)
             moviePoster.loadFromUrl((arguments!![PARAM_MOVIE] as MovieView).poster, R.drawable.movie_empty)
@@ -79,6 +85,7 @@ class MovieDetailsFragment : BaseFragment() {
 
                 movieDirector.text = director
                 movieRuntime.text = timeDuration
+                movieRatingsAdapter.collection = ratings
             }
         }
         movieDetailsAnimator.fadeVisible(scrollView, movieDetails)
